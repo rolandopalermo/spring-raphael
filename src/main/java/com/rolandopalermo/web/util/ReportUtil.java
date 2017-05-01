@@ -11,11 +11,11 @@ public class ReportUtil {
 		list.add(new Language("Shell", 5));
 		list.add(new Language("Python", 5));
 		list.add(new Language("PHP", 4));
-		list.add(new Language("C", 4));
+		list.add(new Language("C", 11));
 		list.add(new Language("Perl", 3));
-		list.add(new Language("C++", 2));
+		list.add(new Language("C++", 8));
 		list.add(new Language("Java", 2));
-		list.add(new Language("Objective-C", 2));
+		list.add(new Language("Objective-C", 20));
 		return list;
 	}
 }

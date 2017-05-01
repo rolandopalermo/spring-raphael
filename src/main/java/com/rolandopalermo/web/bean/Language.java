@@ -2,6 +2,8 @@ package com.rolandopalermo.web.bean;
 
 import java.io.Serializable;
 
+import com.rolandopalermo.web.util.JsonConverter;
+
 public class Language implements Serializable {
 
 	private static final long serialVersionUID = 1L;
@@ -28,6 +30,12 @@ public class Language implements Serializable {
 
 	public void setPercentageOfUse(double percentageOfUse) {
 		this.percentageOfUse = percentageOfUse;
+	}
+
+	@Override
+	public String toString() {
+		String json = JsonConverter.INSTANCE.asJsonString(this);
+		return json;
 	}
 
 }

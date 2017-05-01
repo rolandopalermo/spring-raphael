@@ -1,7 +1,9 @@
 Raphael.fn.pieChart = function(cx, cy, r, values, labels, stroke) {
-	var contenedor = $("#canvas_container");
-	var paper = this, rad = Math.PI / 180, chart = this.set();
-	
+	var paper = this;
+	var rad = Math.PI / 180;// degrees to radians
+	var chart = this.set();
+	var angle = 0, total = 0, start = 0;
+	// Draw a sector
 	function sector(cx, cy, r, startAngle, endAngle, params) {
 		console.log(params.fill);
 		var x1 = cx + r * Math.cos(-startAngle * rad), x2 = cx + r
@@ -13,8 +15,8 @@ Raphael.fn.pieChart = function(cx, cy, r, values, labels, stroke) {
 						+(endAngle - startAngle > 180), 0, x2, y2, "z" ]).attr(
 				params);
 	}
-	
-	var angle = 0, total = 0, start = 0, process = function(j) {
+
+	process = function(j) {
 		var value = values[j], angleplus = 360 * value / total, popangle = angle
 				+ (angleplus / 2), color = Raphael.hsb(start, .75, 1), ms = 500, delta = 30, bcolor = Raphael
 				.hsb(start, 1, 1), p = sector(cx, cy, r, angle, angle
@@ -60,11 +62,33 @@ Raphael.fn.pieChart = function(cx, cy, r, values, labels, stroke) {
 };
 
 $(function() {
-	var values = [], labels = [];
-	$("tr").each(function() {
-		values.push(parseInt($("td", this).text(), 10));
-		labels.push($("th", this).text());
+	$.ajax({
+		method: "POST",
+        url: 'get-full-report',
+        dataType: 'json',
+        crossDomain: true,
+        beforeSend: function (xhr) {
+            //Set authentication headers
+        },
+        success: function (data, textStatus, jqXHR) {
+        	if (data.error) {
+                alert(data.message);
+            } else {
+            	var values = [], labels = [];
+            	$.each(data, function(i, item) {
+            		values.push(parseInt(data[i].percentageOfUse, 10));
+            		labels.push(data[i].name);
+            	});
+            	Raphael("holder", 700, 700).pieChart(350, 350, 200, values, labels, "#fff");
+            }
+        },
+        error: function (xhr) { // if error occured
+            alert('No se pudo procesar la solicitud.');
+        },
+        complete: function () {
+        },
+        xhrFields: {
+            withCredentials: true
+        }
 	});
-	$("table").hide();
-	Raphael("holder", 700, 700).pieChart(350, 350, 200, values, labels, "#fff");
 });

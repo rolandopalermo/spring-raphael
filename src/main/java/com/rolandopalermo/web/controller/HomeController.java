@@ -28,7 +28,7 @@ public class HomeController {
 		String jsonResponse = "";
 		ResponseList<Language> list = ReportUtil.generateReport();
 		if (list == null || list.isEmpty()) {
-			jsonResponse = "{\"error\" : true, \"message\": \"No hay datos disponibles\"}";
+			jsonResponse = "{\"error\" : true, \"message\": \"No available data\"}";
 		} else {
 			jsonResponse = list.toString();
 		}
